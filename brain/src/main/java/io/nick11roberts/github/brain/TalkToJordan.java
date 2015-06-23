@@ -9,8 +9,11 @@ import javax.inject.Named;
 @Api(name = "talkToJordan", version = "v1", namespace = @ApiNamespace(ownerDomain = "brain.github.nick11roberts.io", ownerName = "brain.github.nick11roberts.io", packagePath = ""))
 public class TalkToJordan {
 
-    @ApiMethod(name = "propose")
-    public ResponseStatement propose(@Named("inputStatement") String inputStatement) {
+    @ApiMethod(name = "prompt")
+    public ResponseStatement prompt(@Named("inputStatement") String inputStatement) {
+
+        TrainingExampleManager tem = new TrainingExampleManager();
+        tem.parseText(inputStatement);
 
         ResponseStatement response = new ResponseStatement(inputStatement);
 

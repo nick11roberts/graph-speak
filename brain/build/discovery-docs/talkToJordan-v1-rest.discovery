@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/qArdlID7-pBN_TrlrFGB6esffTI\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/LkcjySRhZFyQ3IftFB8EeESEqx8\"",
  "discoveryVersion": "v1",
  "id": "talkToJordan:v1",
  "name": "talkToJordan",
@@ -13,10 +13,10 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://myApplicationId.appspot.com/_ah/api/talkToJordan/v1/propose/",
- "basePath": "/_ah/api/talkToJordan/v1/propose/",
+ "baseUrl": "https://myApplicationId.appspot.com/_ah/api/talkToJordan/v1/prompt/",
+ "basePath": "/_ah/api/talkToJordan/v1/prompt/",
  "rootUrl": "https://myApplicationId.appspot.com/_ah/api/",
- "servicePath": "talkToJordan/v1/propose/",
+ "servicePath": "talkToJordan/v1/prompt/",
  "batchPath": "batch",
  "parameters": {
   "alt": {
@@ -84,8 +84,8 @@
   }
  },
  "methods": {
-  "propose": {
-   "id": "talkToJordan.propose",
+  "prompt": {
+   "id": "talkToJordan.prompt",
    "path": "{inputStatement}",
    "httpMethod": "POST",
    "parameters": {

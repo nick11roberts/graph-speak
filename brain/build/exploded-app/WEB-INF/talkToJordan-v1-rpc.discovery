@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/qArdlID7-pBN_TrlrFGB6esffTI\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/LkcjySRhZFyQ3IftFB8EeESEqx8\"",
  "discoveryVersion": "v1",
  "id": "talkToJordan:v1",
  "name": "talkToJordan",
@@ -82,8 +82,8 @@
   }
  },
  "methods": {
-  "talkToJordan.propose": {
-   "id": "talkToJordan.propose",
+  "talkToJordan.prompt": {
+   "id": "talkToJordan.prompt",
    "parameters": {
     "inputStatement": {
      "type": "string",
