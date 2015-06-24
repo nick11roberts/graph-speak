@@ -14,20 +14,15 @@ public class Edge {
 
     private Edge(){}
 
-    public Edge(Double retention, Vertex vertexTo, Vertex vertexFrom){
-        setRetention(retention);
-        setVertexFrom(vertexFrom);
-        setVertexTo(vertexTo);
-    }
-
     public Edge(Vertex vertexFrom, Vertex vertexTo){
-        setRetention(1.0);
+        setRetentionIndex(2.0);
+        setRetention(0.0);
         setVertexFrom(vertexFrom);
         setVertexTo(vertexTo);
+        constructVertexTuple();
     }
 
-    @Id
-    private Long id; //Automatically generated
+    private Double retentionIndex;
 
     private Double retention;
 
@@ -36,6 +31,22 @@ public class Edge {
 
     @Index
     private Ref<Vertex> vertexTo;
+
+    @Id
+    private String vertexTuple;
+
+    public void traverse(){
+        setRetention(Math.log(getRetentionIndex()));
+        setRetentionIndex(getRetentionIndex() + 1.0);
+    }
+
+    public Double getRetentionIndex() {
+        return retentionIndex;
+    }
+
+    public void setRetentionIndex(Double retentionIndex) {
+        this.retentionIndex = retentionIndex;
+    }
 
     public Double getRetention() {
         return retention;
@@ -59,5 +70,15 @@ public class Edge {
 
     public void setVertexTo(Vertex vertexTo) {
         this.vertexTo = Ref.create(vertexTo);
+    }
+
+    public void constructVertexTuple(){
+        if ((vertexFrom != null) && (vertexTo != null)){
+            vertexTuple = "(" + getVertexFrom().getWord() + ", " + getVertexTo().getWord() + ")";
+        }
+    }
+
+    public String getVertexTuple(){
+        return vertexTuple;
     }
 }

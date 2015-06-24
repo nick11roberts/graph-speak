@@ -3,6 +3,8 @@ package io.nick11roberts.github.brain;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.VoidWork;
 
 import java.util.List;
 
@@ -23,9 +25,24 @@ public class TalkToJordan {
             for (int j = 0; j <= parsedVertexMatrix.get(i).size() - 1; j++){
                 ofy().save().entity(parsedVertexMatrix.get(i).get(j)).now();
                 if (j >= 1) {
-                    ofy().save().entity(
-                            new Edge(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j))
-                    ).now();
+                    if (findEdgeRecord(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j)) == null) {
+                        ofy().save().entity(
+                                new Edge(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j))
+                        ).now();
+                    }else{
+                        final Vertex vertexFrom = parsedVertexMatrix.get(i).get(j - 1);
+                        final Vertex vertexTo = parsedVertexMatrix.get(i).get(j);
+
+                        ofy().transact( new VoidWork() {
+                            public void vrun() {
+                                Edge edgeToBeTraversed = ofy().load().key(
+                                        Key.create(Edge.class, findEdgeRecord(vertexFrom, vertexTo).getVertexTuple())
+                                ).now();
+                                edgeToBeTraversed.traverse();
+                                ofy().save().entity(edgeToBeTraversed).now();
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -33,6 +50,16 @@ public class TalkToJordan {
         ResponseStatement response = new ResponseStatement(inputStatement);
 
         return response;
+    }
+
+    private Edge findEdgeRecord(Vertex vertexFrom, Vertex vertexTo) {
+        String searchableVertexTuple = "("
+                + vertexFrom.getWord()
+                + ", "
+                + vertexTo.getWord()
+                + ")";
+
+        return ofy().load().type(Edge.class).id(searchableVertexTuple).now();
     }
 
 }
