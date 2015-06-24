@@ -20,7 +20,7 @@ public class Edge {
         setVertexTo(vertexTo);
     }
 
-    public Edge(Vertex vertexTo, Vertex vertexFrom){
+    public Edge(Vertex vertexFrom, Vertex vertexTo){
         setRetention(1.0);
         setVertexFrom(vertexFrom);
         setVertexTo(vertexTo);

@@ -30,9 +30,26 @@ public class TrainingExampleManager {
         return parsedText;
     }
 
-    public Boolean learnExample(List<List<String>> parsedText){
-        Boolean success = false;
+    public List<List<Vertex>> parsedTextToVertices(List<List<String>> parsedText){
+        List<List<Vertex>> vertexMatrix = new ArrayList<List<Vertex>>();
 
-        return success;
+        for (int i = 0; i <= parsedText.size() - 1; i++){
+            vertexMatrix.add(new ArrayList<Vertex>());
+            for (int j = 0; j <= parsedText.get(i).size() - 1; j++){
+                if (!(parsedText.get(i).get(j).equals("")
+                        || parsedText.get(i).get(j).equals(" ")
+                        || parsedText.get(i).get(j) == null)){
+                    vertexMatrix.get(i).add(new Vertex(parsedText.get(i).get(j)));
+                }
+            }
+        }
+
+        for (int i = parsedText.size() - 1; i >= 0; i--)
+            if (vertexMatrix.get(i).isEmpty())
+                vertexMatrix.remove(i);
+
+        System.out.println(vertexMatrix);
+
+        return vertexMatrix;
     }
 }
