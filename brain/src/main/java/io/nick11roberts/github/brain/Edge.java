@@ -20,6 +20,7 @@ public class Edge {
         setVertexFrom(vertexFrom);
         setVertexTo(vertexTo);
         constructVertexTuple();
+        traverse();
     }
 
     private Double retentionIndex;
