@@ -2,6 +2,7 @@ package io.nick11roberts.github.brain;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 /**
  * Created by nick on 6/22/15.
@@ -25,5 +26,6 @@ public class Vertex {
     }
 
     @Id
+    @Index
     private String word; //Must be unique
 }

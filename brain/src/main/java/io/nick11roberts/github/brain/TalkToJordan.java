@@ -3,10 +3,16 @@ package io.nick11roberts.github.brain;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Query;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Named;
 
@@ -47,7 +53,9 @@ public class TalkToJordan {
             }
         }
 
-        ResponseStatement response = new ResponseStatement(inputStatement);
+
+
+        ResponseStatement response = new ResponseStatement(generateResponse(10));
 
         return response;
     }
@@ -60,6 +68,43 @@ public class TalkToJordan {
                 + ")";
 
         return ofy().load().type(Edge.class).id(searchableVertexTuple).now();
+    }
+
+    private String generateResponse(int inputStatementLength){
+        String response = "";
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+        Query q = new Query("Vertex");
+        List<Entity> results = datastore.prepare(q).asList(FetchOptions.Builder.withDefaults());
+
+        Integer randomInitialWordIndex = randInt(0, results.size() - 1);
+
+        response += results.get(randomInitialWordIndex).getKey().getName();
+
+        for(int i = 0; i <= inputStatementLength-1; i++){
+            response += " ";
+            //find list of connecting edges
+            // datastore.prepare(new Query("Edge").setFilter(new Query.FilterPredicate("VertexFrom", Query.FilterOperator.EQUAL, )));
+            //choose random edge
+            //append next word
+        }
+
+        response += ". "; //Replace with something else.
+
+        return response;
+    }
+
+    public static int randInt(int min, int max) {
+
+        // NOTE: Usually this should be a field rather than a method
+        // variable so that it is not re-seeded every call.
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
     }
 
 }
