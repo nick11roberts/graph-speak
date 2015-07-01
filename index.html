@@ -11,47 +11,52 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/jordan-style.css" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type = "text/javascript">
+      function talkToJordan(){
+        $(document).ready(function() {
+          var inputStatement = $('#inputArea').val();
+          $('#txtOutput').text(inputStatement);
+        });
+      } // end talkToJordan
+   </script>
   </head>
   <body>
     <section class="page-header">
 
       <h1 class="project-name">Jordan</h1>
-      <h2 class="project-tagline">A chat bot written using Google App Engine. </h2>
+      <h2 class="project-tagline">A chat bot powered by Google App Engine. </h2>
       <br/>
       <div class="container">
         <form id="jordanInputForm">
 
           <div class="group" id="inputTextBox">
-            <input type="text" required>
+            <input id="inputArea" type="text" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Say something to Jordan</label>
           </div>
 
         </form>
-        <input name="buttonExecute" onclick="execute(document.getElementById('inputTextBox').value)" type="button" value="Go" class="btn" />
+        <input name="buttonExecute" onclick="talkToJordan()" type="button" value="Go" class="btn" />
         <br/>
         <a href="https://github.com/nick11roberts/jordan" class="btn">View on GitHub</a>
         <a href="https://github.com/nick11roberts/jordan/zipball/master" class="btn">Download .zip</a>
         <a href="https://github.com/nick11roberts/jordan/tarball/master" class="btn">Download .tar.gz</a>
       </div>
 
-
-
-
-
-
-
     </section>
 
     <section class="main-content">
 
 
-
+      <p id="txtOutput">
+      </p>
 
       <!--
         main content here.
       -->
+
 
 
 

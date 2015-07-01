@@ -2,7 +2,7 @@
 
 /* basic stylings ------------------------------------------ */
 body                 { background:url(http://scotch.io/wp-content/uploads/2014/07/61.jpg); }
-.container      {  
+.container      {
   width:600px;
   margin:30px auto 0;
   display:block;
@@ -120,4 +120,9 @@ input:focus ~ .highlight {
 
 #jordanInputForm {
   width: 100%;
+}
+
+#txtOutput {
+  word-wrap: break-word;
+  margin: auto;
 }
