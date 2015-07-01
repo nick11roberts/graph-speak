@@ -1,0 +1,20 @@
+<link rel="import" href="../../../iron-media-query/iron-media-query.html"><link rel="import" href="../../../iron-icons/iron-icons.html"><link rel="import" href="../../../paper-drawer-panel/paper-drawer-panel.html"><link rel="import" href="../../../paper-header-panel/paper-header-panel.html"><link rel="import" href="../../../paper-icon-button/paper-icon-button.html"><link rel="import" href="../../../paper-item/paper-item.html"><link rel="import" href="../../../paper-material/paper-material.html"><link rel="import" href="../../../paper-menu/paper-menu.html"><link rel="import" href="../../../paper-toolbar/paper-toolbar.html"><dom-module id="x-app"><link rel="import" type="css" href="x-app.css"><template><paper-drawer-panel id="drawerPanel" responsive-width="1024px" drawer-width="{{drawerWidth}}"><paper-header-panel class="list-panel" drawer="" mode="seamed"><paper-toolbar class$="{{toolbarClass}}"></paper-toolbar><paper-menu class="list" on-iron-activate="_listTap"><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item><paper-item></paper-item></paper-menu></paper-header-panel><paper-header-panel class="main-panel" main="" mode="{{mainMode}}"><paper-toolbar class$="{{toolbarClass}}"><paper-icon-button icon="menu" paper-drawer-toggle=""></paper-icon-button></paper-toolbar><div class="content"><paper-material></paper-material></div></paper-header-panel></paper-drawer-panel><iron-media-query query="(max-width: 780px)" query-matches="{{_isMobile}}"></iron-media-query></template><script>
+    Polymer({
+      is: 'x-app',
+      properties: {
+        _isMobile: {
+          type: Boolean,
+          observer: '_isMobileChanged'
+        }
+      },
+      _listTap: function() {
+        this.$.drawerPanel.closeDrawer();
+      },
+      _isMobileChanged: function(isMobile) {
+        this.mainMode = isMobile ? 'seamed' : 'cover';
+        this.drawerWidth = isMobile ? '100%' : '320px';
+        this.toolbarClass = isMobile ? '' : 'tall';
+        this.updateStyles();
+      }
+    });
+  </script></dom-module>
