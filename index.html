@@ -16,7 +16,7 @@
       function talkToJordan(){
         $(document).ready(function() {
           var inputStatement = $('#inputArea').val();
-          $('#txtOutput').text(inputStatement);
+          $('#txtOutput').text(encodeURIComponent(inputStatement));
         });
       } // end talkToJordan
    </script>
