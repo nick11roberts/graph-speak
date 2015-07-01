@@ -11,8 +11,11 @@ import com.google.appengine.api.datastore.Query;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
 
 import javax.inject.Named;
 
@@ -71,26 +74,48 @@ public class TalkToJordan {
     }
 
     private String generateResponse(int inputStatementLength){
+        Map<Integer, String> punctuation = new HashMap<>();
+        punctuation.put(0,".");
+        punctuation.put(1,"!");
+        punctuation.put(2,"?");
         String response = "";
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Stack<List<Entity>> edgeQueryStack = new Stack<List<Entity>>();
+        Stack<Vertex> vertexStack = new Stack<Vertex>();
 
         Query q = new Query("Vertex");
         List<Entity> results = datastore.prepare(q).asList(FetchOptions.Builder.withDefaults());
 
         Integer randomInitialWordIndex = randInt(0, results.size() - 1);
+        com.google.appengine.api.datastore.Key currentVertexKey = results.get(randomInitialWordIndex).getKey();
 
-        response += results.get(randomInitialWordIndex).getKey().getName();
+        String currentWord = results.get(randomInitialWordIndex).getKey().getName();
+        response += currentWord;
 
         for(int i = 0; i <= inputStatementLength-1; i++){
-            response += " ";
             //find list of connecting edges
-            // datastore.prepare(new Query("Edge").setFilter(new Query.FilterPredicate("VertexFrom", Query.FilterOperator.EQUAL, )));
-            //choose random edge
-            //append next word
+            edgeQueryStack.push(
+                    datastore.prepare(
+                            new Query("Edge").setFilter(
+                                    new Query.FilterPredicate(
+                                            "vertexFromWord", Query.FilterOperator.EQUAL, currentWord
+                                    )
+                            )
+                    ).asList(FetchOptions.Builder.withDefaults())
+            );
+
+            if(!edgeQueryStack.isEmpty() && edgeQueryStack.peek().size()>0) {
+                //choose random edge, get next vertex, reset current word
+                currentWord = (String)edgeQueryStack.peek().get(
+                                randInt(0, edgeQueryStack.peek().size() - 1)
+                        ).getProperty("vertexToWord");
+                //append current word
+                response += " " + currentWord;
+            }
+            edgeQueryStack.pop();
         }
-
-        response += ". "; //Replace with something else.
-
+        response += punctuation.get(randInt(0, punctuation.size()-1));
+        response = response.substring(0, 1).toUpperCase() + response.substring(1);
         return response;
     }
 

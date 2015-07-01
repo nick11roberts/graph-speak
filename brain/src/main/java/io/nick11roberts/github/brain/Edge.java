@@ -28,6 +28,12 @@ public class Edge {
     private Double retention;
 
     @Index
+    private String vertexFromWord;
+
+    @Index
+    private String vertexToWord;
+
+    @Index
     private Ref<Vertex> vertexFrom;
 
     @Index
@@ -62,6 +68,7 @@ public class Edge {
     }
 
     public void setVertexFrom(Vertex vertexFrom) {
+        vertexFromWord = vertexFrom.getWord();
         this.vertexFrom = Ref.create(vertexFrom);
     }
 
@@ -70,6 +77,7 @@ public class Edge {
     }
 
     public void setVertexTo(Vertex vertexTo) {
+        vertexToWord = vertexTo.getWord();
         this.vertexTo = Ref.create(vertexTo);
     }
 
