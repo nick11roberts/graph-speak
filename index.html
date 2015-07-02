@@ -27,7 +27,7 @@
             <span class="bar"></span>
             <label>Say something to Jordan</label>
           </div>
-          <input name="buttonExecute" type="submit" value="Submit" class="btn" id="talkToJordanSubmitButton" />
+          <input name="buttonExecute" type="button" value="Submit" class="btn" id="talkToJordanSubmitButton" />
         </form>
 
         <br/>
@@ -70,7 +70,7 @@
       }
 
       function afterClientLibLoad(){
-        document.getElementById('jordanInputForm').onsubmit = function() {
+        document.getElementById('talkToJordanSubmitButton').onclick = function() {
           callPrompt();
         }
       }
