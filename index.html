@@ -65,7 +65,7 @@
         //Parameters are APIName,APIVersion,CallBack function,API Root
         gapi.client.load('talkToJordan', 'v1',
           function() {
-            doSomethingAfterLoading();
+            afterClientLibLoad();
           }, 'https://dazzling-card-98505.appspot.com/_ah/api');
 
       }
