@@ -63,15 +63,21 @@
     <script type = "text/javascript">
       function init() {
         //Parameters are APIName,APIVersion,CallBack function,API Root
-        gapi.client.load('talkToJordan', 'v1', null, 'https://dazzling-card-98505.appspot.com/_ah/api/explorer');
+        gapi.client.load('talkToJordan', 'v1',
+          function() {
+            doSomethingAfterLoading();
+          }, 'https://dazzling-card-98505.appspot.com/_ah/api');
 
+      }
+
+      function afterClientLibLoad(){
         document.getElementById('jordanInputForm').onclick = function() {
-          prompt();
+          callPrompt();
         }
       }
 
       //Prompt function
-      function prompt() {
+      function callPrompt() {
               //Validate the entries
               var _UserInput = document.getElementById('inputArea').value;
 
@@ -79,7 +85,7 @@
               var requestData = {};
               requestData.inputStatement = _UserInput;
               //
-              gapi.client.prompt.prompt(requestData).execute(function(resp) {
+              gapi.client.talkToJordan.prompt(requestData).execute(function(resp) {
                       if (!resp.code) {
                               //Just logging to console now, you can do your check here/display message
                               console.log(resp.id + ":" + resp.statement);
