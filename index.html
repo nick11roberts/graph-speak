@@ -12,14 +12,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/jordan-style.css" media="screen">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type = "text/javascript">
-      function talkToJordan(){
-        $(document).ready(function() {
-          var inputStatement = $('#inputArea').val();
-          $('#txtOutput').text(encodeURIComponent(inputStatement));
-        });
-      } // end talkToJordan
-   </script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
   </head>
   <body>
     <section class="page-header">
@@ -28,17 +21,16 @@
       <h2 class="project-tagline">A chat bot powered by Google App Engine. </h2>
       <br/>
       <div class="container">
-        <form id="jordanInputForm">
-
+        <form id="jordanInputForm" onclick="javascript:void(0);">
           <div class="group" id="inputTextBox">
             <input id="inputArea" type="text" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Say something to Jordan</label>
           </div>
-
+          <input name="buttonExecute" type="button" value="Go" class="btn" />
         </form>
-        <input name="buttonExecute" onclick="talkToJordan()" type="button" value="Go" class="btn" />
+
         <br/>
         <a href="https://github.com/nick11roberts/jordan" class="btn">View on GitHub</a>
         <a href="https://github.com/nick11roberts/jordan/zipball/master" class="btn">Download .zip</a>
@@ -67,6 +59,35 @@
       </footer>
 
     </section>
+
+
+    <script type = "text/javascript">
+      function init() {
+        //Parameters are APIName,APIVersion,CallBack function,API Root
+        gapi.client.load('talkToJordan', 'v1', null, 'https://dazzling-card-98505.appspot.com/_ah/api/explorer');
+
+        document.getElementById('jordanInputForm').onclick = function() {
+          prompt();
+        }
+      }
+
+      //Prompt function
+      function prompt() {
+              //Validate the entries
+              var _UserInput = document.getElementById('inputArea').value;
+
+              //Build the Request Object
+              var requestData = {};
+              requestData.inputStatement = _UserInput;
+              //
+              gapi.client.prompt.prompt(requestData).execute(function(resp) {
+                      if (!resp.code) {
+                              //Just logging to console now, you can do your check here/display message
+                              console.log(resp.id + ":" + resp.statement);
+                      }
+              });
+      }
+   </script>
 
 
   </body>
