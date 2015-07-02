@@ -87,8 +87,7 @@
               //
               gapi.client.talkToJordan.prompt(requestData).execute(function(resp) {
                       if (!resp.code) {
-                              //Just logging to console now, you can do your check here/display message
-                              console.log(resp.id + ":" + resp.statement);
+                              $('#txtOutput').text(resp.statement);
                       }
               });
       }
