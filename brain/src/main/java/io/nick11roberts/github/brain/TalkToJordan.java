@@ -8,8 +8,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Query;
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.VoidWork;
+
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.DefaultEdge;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,18 +28,28 @@ public class TalkToJordan {
     @ApiMethod(name = "prompt")
     public ResponseStatement prompt(@Named("inputStatement") String inputStatement) {
 
-        TrainingExampleManager tem = new TrainingExampleManager();
-        List<List<Vertex>> parsedVertexMatrix = tem.parsedTextToVertices(tem.parseText(inputStatement));
+        ResponseStatement response = new ResponseStatement("Hey");
 
-        for (int i = 0; i <= parsedVertexMatrix.size() - 1; i++){
-            for (int j = 0; j <= parsedVertexMatrix.get(i).size() - 1; j++){
-                ofy().save().entity(parsedVertexMatrix.get(i).get(j)).now();
+        TrainingExampleManager tem = new TrainingExampleManager();
+        List<List<String>> parsedText = tem.parseText(inputStatement);
+        List<List<Vertex>> parsedVertexMatrix = tem.parsedTextToVertices(parsedText);
+
+
+        DefaultDirectedWeightedGraph<String, DefaultEdge> wordNetwork = new DefaultDirectedWeightedGraph<String, DefaultEdge>(DefaultEdge.class);
+
+        for (int i = 0; i <= parsedText.size() - 1; i++){ // for number of sentences
+            for (int j = 0; j <= parsedText.get(i).size() - 1; j++){ // for number of words per sentence
+                //add current vertex to the graph
+                //ofy().save().entity(parsedText.get(i).get(j)).now();
                 if (j >= 1) {
-                    if (findEdgeRecord(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j)) == null) {
-                        ofy().save().entity(
+                    if (findEdgeRecord(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j)) == null) { //Check graph instead
+                        //Add edge to graph
+                        /*ofy().save().entity(
                                 new Edge(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j))
-                        ).now();
+                        ).now();*/
                     }else{
+                        //Increment the edge weight
+                        /*
                         final Vertex vertexFrom = parsedVertexMatrix.get(i).get(j - 1);
                         final Vertex vertexTo = parsedVertexMatrix.get(i).get(j);
 
@@ -50,7 +61,7 @@ public class TalkToJordan {
                                 edgeToBeTraversed.traverse();
                                 ofy().save().entity(edgeToBeTraversed).now();
                             }
-                        });
+                        });*/
                     }
                 }
             }
@@ -58,7 +69,7 @@ public class TalkToJordan {
 
 
 
-        ResponseStatement response = new ResponseStatement(generateResponse(10));
+        //ResponseStatement response = new ResponseStatement(generateResponse(10));
 
         return response;
     }
