@@ -40,15 +40,14 @@ public class TalkToJordan {
         for (int i = 0; i <= parsedText.size() - 1; i++){ // for number of sentences
             for (int j = 0; j <= parsedText.get(i).size() - 1; j++){ // for number of words per sentence
                 //add current vertex to the graph
-                //ofy().save().entity(parsedText.get(i).get(j)).now();
+                wordNetwork.addVertex(parsedText.get(i).get(j));
                 if (j >= 1) {
-                    if (findEdgeRecord(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j)) == null) { //Check graph instead
+                    if (!wordNetwork.containsEdge(parsedText.get(i).get(j - 1), parsedText.get(i).get(j))){
                         //Add edge to graph
-                        /*ofy().save().entity(
-                                new Edge(parsedVertexMatrix.get(i).get(j - 1), parsedVertexMatrix.get(i).get(j))
-                        ).now();*/
-                    }else{
+                        wordNetwork.addEdge(parsedText.get(i).get(j - 1), parsedText.get(i).get(j));
+                    } else{
                         //Increment the edge weight
+                        //Do this later I guess
                         /*
                         final Vertex vertexFrom = parsedVertexMatrix.get(i).get(j - 1);
                         final Vertex vertexTo = parsedVertexMatrix.get(i).get(j);
