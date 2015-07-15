@@ -44,8 +44,11 @@
     <orderEntry type="library" exported="" name="appengine-endpoints-deps-1.9.18" level="project" />
     <orderEntry type="library" exported="" name="servlet-api-2.5" level="project" />
     <orderEntry type="library" exported="" name="jgrapht-core-0.9.1" level="project" />
+    <orderEntry type="library" exported="" name="jgrapht-ext-0.9.1" level="project" />
     <orderEntry type="library" exported="" name="objectify-5.1.5" level="project" />
     <orderEntry type="library" exported="" name="appengine-api-1.0-sdk-1.9.18" level="project" />
+    <orderEntry type="library" exported="" name="jgraphx-2.0.0.1" level="project" />
+    <orderEntry type="library" exported="" name="jgraph-5.13.0.0" level="project" />
     <orderEntry type="library" exported="" name="guava-18.0" level="project" />
     <orderEntry type="library" exported="" name="brain.brain-android-endpoints" level="project" />
   </component>

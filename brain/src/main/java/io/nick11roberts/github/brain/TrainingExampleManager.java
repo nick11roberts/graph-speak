@@ -11,7 +11,7 @@ public class TrainingExampleManager {
     public TrainingExampleManager(){}
 
     private List<List<String>> parsedText = new ArrayList<List<String>>();
-    private final Boolean DEBUG = true;
+    private final Boolean DEBUG = false;
 
     public List<List<String>> parseText(String text){
         String[] textSentence = text.split("(?<=[.!?])\\s*"); //Splits text into sentences

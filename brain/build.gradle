@@ -27,6 +27,7 @@ dependencies {
     compile 'com.google.appengine:appengine-endpoints-deps:1.9.18'
     compile 'javax.servlet:servlet-api:2.5'
     compile 'org.jgrapht:jgrapht-core:0.9.1'
+    compile 'org.jgrapht:jgrapht-ext:0.9.1'
     compile 'com.googlecode.objectify:objectify:5.1.5'
 }
 

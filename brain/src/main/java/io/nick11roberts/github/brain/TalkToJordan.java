@@ -9,9 +9,14 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Query;
 
+import org.jgrapht.ext.DOTExporter;
+import org.jgrapht.ext.EdgeNameProvider;
+import org.jgrapht.ext.IntegerEdgeNameProvider;
+import org.jgrapht.ext.StringNameProvider;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,18 +30,14 @@ import static io.nick11roberts.github.brain.OfyService.ofy;
 @Api(name = "talkToJordan", version = "v1", namespace = @ApiNamespace(ownerDomain = "brain.github.nick11roberts.io", ownerName = "brain.github.nick11roberts.io", packagePath = ""))
 public class TalkToJordan {
 
+    private DefaultDirectedWeightedGraph<String, DefaultWeightedEdge> wordNetwork = new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+
+
     @ApiMethod(name = "prompt")
     public ResponseStatement prompt(@Named("inputStatement") String inputStatement) {
-
         ResponseStatement response = new ResponseStatement("Hey");
-
         TrainingExampleManager tem = new TrainingExampleManager();
         List<List<String>> parsedText = tem.parseText(inputStatement);
-        List<List<Vertex>> parsedVertexMatrix = tem.parsedTextToVertices(parsedText);
-
-
-        DefaultDirectedWeightedGraph<String, DefaultEdge> wordNetwork = new DefaultDirectedWeightedGraph<String, DefaultEdge>(DefaultEdge.class);
-
         for (int i = 0; i <= parsedText.size() - 1; i++){ // for number of sentences
             for (int j = 0; j <= parsedText.get(i).size() - 1; j++){ // for number of words per sentence
                 //add current vertex to the graph
@@ -45,31 +46,44 @@ public class TalkToJordan {
                     if (!wordNetwork.containsEdge(parsedText.get(i).get(j - 1), parsedText.get(i).get(j))){
                         //Add edge to graph
                         wordNetwork.addEdge(parsedText.get(i).get(j - 1), parsedText.get(i).get(j));
+                        wordNetwork.setEdgeWeight(
+                                wordNetwork.getEdge(parsedText.get(i).get(j - 1), parsedText.get(i).get(j)),
+                                2.0
+                        );
                     } else{
                         //Increment the edge weight
-                        //Do this later I guess
-                        /*
-                        final Vertex vertexFrom = parsedVertexMatrix.get(i).get(j - 1);
-                        final Vertex vertexTo = parsedVertexMatrix.get(i).get(j);
-
-                        ofy().transact( new VoidWork() {
-                            public void vrun() {
-                                Edge edgeToBeTraversed = ofy().load().key(
-                                        Key.create(Edge.class, findEdgeRecord(vertexFrom, vertexTo).getVertexTuple())
-                                ).now();
-                                edgeToBeTraversed.traverse();
-                                ofy().save().entity(edgeToBeTraversed).now();
-                            }
-                        });*/
+                        wordNetwork.setEdgeWeight(
+                                wordNetwork.getEdge(parsedText.get(i).get(j - 1), parsedText.get(i).get(j)),
+                                wordNetwork.getEdgeWeight(
+                                        wordNetwork.getEdge(
+                                                parsedText.get(i).get(j - 1),
+                                                parsedText.get(i).get(j)
+                                        )
+                                ) + 0.5
+                        );
                     }
                 }
             }
         }
 
+        StringNameProvider<String> vertexLabel = new StringNameProvider<String>(){
+            public String getVertexName(String p) {
+                return p;
+            }
+        };
+
+        EdgeNameProvider<Integer> edgeLabel = new IntegerEdgeNameProvider<Integer>();
+
 
 
         //ResponseStatement response = new ResponseStatement(generateResponse(10));
+        DOTExporter<String, DefaultWeightedEdge> exporter =
+                new DOTExporter<>(vertexLabel, null, null, null, null); //Use a different constructor
+        StringWriter w = new StringWriter();
+        exporter.export(w, wordNetwork);
+        System.out.println(w.toString());
 
+        //Response should be a random walk, so write a random walk function
         return response;
     }
 
