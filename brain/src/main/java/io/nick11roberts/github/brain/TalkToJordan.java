@@ -4,9 +4,16 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
+import org.jgrapht.ext.DOTExporter;
+import org.jgrapht.ext.EdgeNameProvider;
+import org.jgrapht.ext.IntegerEdgeNameProvider;
+import org.jgrapht.ext.StringNameProvider;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +28,7 @@ public class TalkToJordan {
 
     private final int RESPONSE_LENGTH_VARIATION = 3;
 
-    /*
+
     @ApiMethod(name = "getState")
     public ResponseStatement getState(){
         StringNameProvider<String> vertexLabel = new StringNameProvider<String>(){
@@ -37,14 +44,22 @@ public class TalkToJordan {
         StringWriter w = new StringWriter();
         exporter.export(w, wordNetwork);
 
-        ResponseStatement responseWrapper = new ResponseStatement(w.toString());
+        ResponseStatement responseWrapper = new ResponseStatement();
 
-        System.out.println(responseWrapper.getStatement());
+
+        try {
+            responseWrapper.setStatement(URLEncoder.encode(w.toString(),"UTF-8"));
+            System.out.println(
+                    URLEncoder.encode(responseWrapper.getStatement(),"UTF-8")
+            );
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         //Doesn't work properly. Ideally, this should generate a text file with these contents.
         return responseWrapper;
     }
-    */
+
 
     @ApiMethod(name = "prompt")
     public ResponseStatement prompt(@Named("inputStatement") String inputStatement) {

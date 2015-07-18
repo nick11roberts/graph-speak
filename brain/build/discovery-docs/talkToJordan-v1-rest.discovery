@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/LkcjySRhZFyQ3IftFB8EeESEqx8\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/2GidhywjHjEzxgnEeEwDwQaGLBQ\"",
  "discoveryVersion": "v1",
  "id": "talkToJordan:v1",
  "name": "talkToJordan",
@@ -13,10 +13,10 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://myApplicationId.appspot.com/_ah/api/talkToJordan/v1/prompt/",
- "basePath": "/_ah/api/talkToJordan/v1/prompt/",
+ "baseUrl": "https://myApplicationId.appspot.com/_ah/api/talkToJordan/v1/",
+ "basePath": "/_ah/api/talkToJordan/v1/",
  "rootUrl": "https://myApplicationId.appspot.com/_ah/api/",
- "servicePath": "talkToJordan/v1/prompt/",
+ "servicePath": "talkToJordan/v1/",
  "batchPath": "batch",
  "parameters": {
   "alt": {
@@ -84,9 +84,20 @@
   }
  },
  "methods": {
+  "getState": {
+   "id": "talkToJordan.getState",
+   "path": "responsestatement",
+   "httpMethod": "GET",
+   "response": {
+    "$ref": "ResponseStatement"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "prompt": {
    "id": "talkToJordan.prompt",
-   "path": "{inputStatement}",
+   "path": "prompt/{inputStatement}",
    "httpMethod": "POST",
    "parameters": {
     "inputStatement": {
